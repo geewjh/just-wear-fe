@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AuthPage from "../AuthPage/AuthPage";
-import DummyPage from "../DummyPage/DummyPage";
+import HomePage from "../HomePage/HomePage";
+import { Routes } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -8,7 +9,13 @@ function App() {
   return (
     <>
       <main className="bg-neutral-content text-4xl font-bold">
-        {user ? <DummyPage /> : <AuthPage />}
+        {user ? (
+          <Routes>
+            <HomePage />
+          </Routes>
+        ) : (
+          <AuthPage />
+        )}
       </main>
     </>
   );
