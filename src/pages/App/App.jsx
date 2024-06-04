@@ -5,11 +5,11 @@ import { Routes, Route } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
 
 function App() {
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(null);
 
   return (
     <>
-      <main className="bg-neutral-content text-4xl font-bold">
+      <main className="">
         {user ? (
           <>
             <NavBar />

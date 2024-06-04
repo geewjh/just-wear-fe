@@ -1,3 +1,11 @@
+import SignUpForm from "../../components/SignUpForm/SignUpForm";
+
 export default function AuthPage() {
-  return <h1>This is the AuthPage</h1>;
+  return (
+    <div>
+      <main className="container flex mx-auto h-[90vh] items-center justify-center">
+        <SignUpForm />
+      </main>
+    </div>
+  );
 }
