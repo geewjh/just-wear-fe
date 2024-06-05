@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 function SignUpForm() {
   const [userData, setUserData] = useState({
@@ -13,6 +14,13 @@ function SignUpForm() {
       ...userData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (userData.password !== userData.confirm) {
+      toast.error("passwords do not match");
+    }
   };
 
   return (
@@ -90,6 +98,7 @@ function SignUpForm() {
           <button
             type="submit"
             className="inline-block px-6 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            onClick={handleSubmit}
           >
             Create an account
           </button>
