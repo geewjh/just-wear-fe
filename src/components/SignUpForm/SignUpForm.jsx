@@ -1,5 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { signUpService } from "../../utilities/users-service";
 
 function SignUpForm() {
   const [userData, setUserData] = useState({
@@ -19,7 +20,15 @@ function SignUpForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (userData.password !== userData.confirm) {
-      toast.error("passwords do not match");
+      toast.error("passwords do not match!");
+    }
+    try {
+      const user = await signUpService(userData);
+      if (user !== null && user !== undefined) {
+        toast.success("successfully signed up!");
+      }
+    } catch (error) {
+      toast.error(`${error.message}`);
     }
   };
 
