@@ -14,7 +14,7 @@ function App() {
       <main className="">
         {user ? (
           <>
-            <NavBar />
+            <NavBar user={user} setUser={setUser} />
             <Routes>
               <Route path="/home" element={<HomePage />} />
             </Routes>
