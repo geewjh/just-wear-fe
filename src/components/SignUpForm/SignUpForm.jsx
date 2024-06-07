@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { signUpService } from "../../utilities/users-service";
 
-function SignUpForm() {
+function SignUpForm({ setUser }) {
   const [userData, setUserData] = useState({
     email: "",
     username: "",
@@ -24,6 +24,7 @@ function SignUpForm() {
     }
     try {
       const user = await signUpService(userData);
+      setUser(user);
       if (user !== null && user !== undefined) {
         toast.success("successfully signed up!");
       }
