@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { IoHomeOutline } from "react-icons/io5";
+import { logOutService } from "../../utilitities/users-service";
 
 export default function NavBar({ user, setUser }) {
   function handleLogOut() {
-    localStorage.removeItem("token");
+    logOutService();
     setUser(null);
   }
 

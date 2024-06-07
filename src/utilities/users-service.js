@@ -7,6 +7,10 @@ export async function signUpService(userData) {
   return getUser();
 }
 
+export async function logOutService() {
+  localStorage.removeItem("token");
+}
+
 export function getToken() {
   // getItem returns null if there's no string
   const token = localStorage.getItem("token");
