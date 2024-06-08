@@ -1,9 +1,16 @@
-import { signUpAPI } from "./users-api";
+import { signUpAPI, loginAPI } from "./users-api";
 
 export async function signUpService(userData) {
   const token = await signUpAPI(userData);
   // persist the "token"
   localStorage.setItem("token", token);
+  return getUser();
+}
+
+export async function loginService(credentials) {
+  const token = await loginAPI(credentials);
+  localStorage.setItem("token", token);
+  // return token;
   return getUser();
 }
 
