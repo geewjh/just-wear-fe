@@ -7,8 +7,8 @@ export async function signUpService(userData) {
   return getUser();
 }
 
-export async function loginService(credentials) {
-  const token = await loginAPI(credentials);
+export async function loginService(loginData) {
+  const token = await loginAPI(loginData);
   localStorage.setItem("token", token);
   // return token;
   return getUser();
