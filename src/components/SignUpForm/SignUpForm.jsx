@@ -2,6 +2,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { signUpService } from "../../utilities/users-service";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function SignUpForm({ setUser }) {
   const [userData, setUserData] = useState({
@@ -41,7 +42,7 @@ function SignUpForm({ setUser }) {
 
   return (
     <div className="container mx-auto max-w-md p-8 bg-white rounded-lg shadow-lg">
-      <form className="p-8 space-y-4">
+      <form className="p-8 space-y-4" onSubmit={handleSubmit}>
         <div className="mb-4">
           <label
             htmlFor="username"
@@ -114,11 +115,16 @@ function SignUpForm({ setUser }) {
           <button
             type="submit"
             className="inline-block px-6 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            onClick={handleSubmit}
           >
             Create an account
           </button>
         </div>
+        <p className="mt-4 text-sm text-gray-400">
+          Already an existing user?{" "}
+          <Link to="/login" className="text-gray-300 underline">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
   );
