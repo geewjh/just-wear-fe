@@ -11,16 +11,25 @@ export default function NavBar({ user, setUser }) {
     setUser(null);
     navigate("/");
   };
-
   return (
-    <nav>
-      <Link to="/home">
-        <IoHomeOutline />
-      </Link>
-      <h3 className="">{user.username}&#39;s closet</h3>
-      <Link to="/" onClick={handleLogOut}>
-        Log Out
-      </Link>
+    <nav className=" p-4 flex justify-between items-center">
+      <div className="flex items-center space-x-4">
+        <Link
+          to="/home"
+          className="text-white text-sm hover:text-zinc-400 transition duration-150 ease-in-out"
+        >
+          <IoHomeOutline className="text-2xl" />
+        </Link>
+      </div>
+      <h3 className="text-xl text-zinc-400">{user.username}&#39;s Closet</h3>
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={handleLogOut}
+          className="text-white text-sm hover:text-zinc-400 transition duration-150 ease-in-out"
+        >
+          Log Out
+        </button>
+      </div>
     </nav>
   );
 }
