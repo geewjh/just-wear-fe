@@ -17,10 +17,10 @@ export default function LandingPage() {
           <p className="mt-4 text-white/90 leading-relaxed">
             Just focus on being your best.
           </p>
-          <Link to="/login" className="btn mr-2">
+          <Link to="/login" className="btn mr-2 mt-4">
             Login
           </Link>
-          <Link to="/register" className="btn">
+          <Link to="/register" className="btn mt-4">
             Register
           </Link>
         </div>
