@@ -1,30 +1,16 @@
+import sendRequest from "./send-request";
+
 const apiURL = import.meta.env.VITE_BASE_URL;
 const BASE_URL = `${apiURL}/api/users`;
 
-export async function signUpAPI(userData) {
-  const res = await fetch(BASE_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userData),
-  });
-
-  if (res.ok) {
-    return res.json();
-  } else {
-    throw new Error("Invalid Sign Up");
-  }
+export function signUpAPI(userData) {
+  return sendRequest(BASE_URL, "POST", userData);
 }
 
-export async function loginAPI(loginData) {
-  const res = await fetch(`${BASE_URL}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(loginData),
-  });
+export function loginAPI(loginData) {
+  return sendRequest(`${BASE_URL}/login`, "POST", loginData);
+}
 
-  if (res.ok) {
-    return res.json();
-  } else {
-    throw new Error("Invalid Login Request");
-  }
+export function checkTokenAPI() {
+  return sendRequest(`${BASE_URL}/check-token`);
 }

@@ -1,4 +1,4 @@
-import { signUpAPI, loginAPI } from "./users-api";
+import { signUpAPI, loginAPI, checkTokenAPI } from "./users-api";
 
 export async function signUpService(userData) {
   const token = await signUpAPI(userData);
@@ -39,6 +39,12 @@ export function getToken() {
   }
 
   return token;
+}
+
+export function checkToken() {
+  // checkToken returns a string, but let's
+  // make it a Date object for more flexibility
+  return checkTokenAPI().then((dateStr) => new Date(dateStr));
 }
 
 export function getUser() {
