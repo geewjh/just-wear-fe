@@ -32,7 +32,7 @@ function SignUpForm({ setUser }) {
         toast.success("successfully signed up!");
         navigate("/home");
       } else {
-        navigate("/sign-up");
+        navigate("/register");
       }
     } catch (error) {
       toast.error(`${error.message}`);

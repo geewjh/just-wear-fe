@@ -5,6 +5,8 @@ import { Routes, Route } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
 import { Toaster } from "react-hot-toast";
 import { getUser } from "../../utilities/users-service";
+import SignUpForm from "../../components/SignUpForm/SignUpForm";
+import LoginForm from "../../components/LoginForm/LoginForm";
 
 function App() {
   const [user, setUser] = useState(getUser());
@@ -20,11 +22,13 @@ function App() {
             </Routes>
           </>
         ) : (
-          <>
-            {" "}
-            <Toaster />
-            <AuthPage setUser={setUser} />
-          </>
+          <Routes>
+            <Route path="/" element={<AuthPage setUser={setUser} />}>
+              <Toaster />
+              <Route path="register" element={<SignUpForm />} />
+              <Route path="login" element={<LoginForm />} />
+            </Route>
+          </Routes>
         )}
       </main>
     </>
