@@ -14,7 +14,7 @@ export default function NavBar({ user, setUser }) {
         <IoHomeOutline />
       </Link>
       <h3 className="">{user.username}&#39;s closet</h3>
-      <Link to="" onClick={handleLogOut}>
+      <Link to="/" onClick={handleLogOut}>
         Log Out
       </Link>
     </nav>
