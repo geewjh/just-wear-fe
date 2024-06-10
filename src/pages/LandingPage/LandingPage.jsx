@@ -1,4 +1,5 @@
 import background from "../../assets/images/landing-pic.jpg";
+import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   return (
@@ -16,6 +17,12 @@ export default function LandingPage() {
           <p className="mt-4 text-white/90 leading-relaxed">
             Just focus on being your best.
           </p>
+          <Link to="/login" className="btn mr-2">
+            Login
+          </Link>
+          <Link to="/register" className="btn">
+            Register
+          </Link>
         </div>
       </div>
     </div>
