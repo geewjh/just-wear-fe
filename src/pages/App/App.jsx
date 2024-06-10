@@ -5,14 +5,14 @@ import { Routes, Route } from "react-router-dom";
 import NavBar from "../../components/NavBar/NavBar";
 import { Toaster } from "react-hot-toast";
 import { getUser } from "../../utilities/users-service";
-import SignUpForm from "../../components/SignUpForm/SignUpForm";
-import LoginForm from "../../components/LoginForm/LoginForm";
+import LandingPage from "../LandingPage/LandingPage";
 
 function App() {
   const [user, setUser] = useState(getUser());
 
   return (
     <>
+      <Toaster />
       <main className="">
         {user ? (
           <>
@@ -23,11 +23,9 @@ function App() {
           </>
         ) : (
           <Routes>
-            <Route path="/" element={<AuthPage setUser={setUser} />}>
-              <Toaster />
-              <Route path="register" element={<SignUpForm />} />
-              <Route path="login" element={<LoginForm />} />
-            </Route>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/register" element={<AuthPage setUser={setUser} />} />
+            <Route path="/login" element={<AuthPage setUser={setUser} />} />
           </Routes>
         )}
       </main>
