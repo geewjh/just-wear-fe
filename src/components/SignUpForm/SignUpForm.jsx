@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { signUpService } from "../../utilities/users-service";
+import { useNavigate } from "react-router-dom";
 
 function SignUpForm({ setUser }) {
   const [userData, setUserData] = useState({
@@ -9,6 +10,8 @@ function SignUpForm({ setUser }) {
     password: "",
     confirm: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setUserData({
@@ -27,6 +30,9 @@ function SignUpForm({ setUser }) {
       setUser(user);
       if (user !== null && user !== undefined) {
         toast.success("successfully signed up!");
+        navigate("/home");
+      } else {
+        navigate("/sign-up");
       }
     } catch (error) {
       toast.error(`${error.message}`);
