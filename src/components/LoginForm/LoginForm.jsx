@@ -1,12 +1,15 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { loginService } from "../../utilities/users-service";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm({ setUser }) {
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setLoginData({
@@ -22,6 +25,9 @@ export default function LoginForm({ setUser }) {
       setUser(user);
       if (user !== null && user !== undefined) {
         toast.success("successfully logged in!");
+        navigate("/home");
+      } else {
+        navigate("/login");
       }
     } catch (error) {
       toast.error(`${error.message}`);
