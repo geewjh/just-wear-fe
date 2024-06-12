@@ -2,30 +2,58 @@ import { useState } from "react";
 
 export default function ClothesForm() {
   const [clothesData, setClothesData] = useState({
-    images: [],
+    name: "",
     type: "",
     material: "",
-    name: "",
+    images: [],
+    preview: [],
   });
+
+  const handleChange = (e) => {
+    setClothesData({
+      ...clothesData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleImageFileInput = (e) => {
     const imageFiles = Array.from(e.target.files); //converts FileList to an arr.
-    const preview = [];
+    const updatedPreview = [];
 
     imageFiles.forEach((img) => {
       const imageUrl = URL.createObjectURL(img); //create object URLs for preview.
-      preview.push(imageUrl);
+      updatedPreview.push(imageUrl);
     });
 
     setClothesData({
       ...clothesData,
-      images: [...preview],
+      images: [...clothesData.images, ...imageFiles],
+      preview: [...clothesData.preview, ...updatedPreview],
     });
+
+    console.log("image uploaded");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (clothesData.images.length === 0) return;
+
+    const imageFormData = new FormData();
+    clothesData.images.forEach((img) => {
+      imageFormData.append("images", img);
+    });
+
+    console.log("image appended", imageFormData);
   };
 
   return (
     <div className="container mx-auto max-w-md p-8 bg-black shadow-lg">
-      <form className="space-y-4 text-white">
+      <form
+        className="space-y-4 text-white"
+        encType="multipart/form-data"
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
         <div className="mb-4">
           <label htmlFor="name" className="block mb-2 text-sm font-semibold">
             Name
@@ -34,6 +62,8 @@ export default function ClothesForm() {
             type="text"
             id="name"
             name="name"
+            value={clothesData.name}
+            onChange={handleChange}
             placeholder=""
             className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-gray-500 focus:border-gray-500"
             required
@@ -47,6 +77,8 @@ export default function ClothesForm() {
           <select
             id="type"
             name="type"
+            value={clothesData.type}
+            onChange={handleChange}
             className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-gray-500 focus:border-gray-500"
           >
             <option>Upperwear</option>
@@ -64,6 +96,8 @@ export default function ClothesForm() {
           <select
             id="material"
             name="material"
+            value={clothesData.material}
+            onChange={handleChange}
             className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-gray-500 focus:border-gray-500"
           >
             <option>Cotton</option>
@@ -75,9 +109,6 @@ export default function ClothesForm() {
         <div className="mb-4">
           <label className="block mb-2 text-sm font-semibold" htmlFor="image">
             Upload Your Clothes
-            <small className="block text-gray-300">
-              (For multiple files, upload all at once)
-            </small>
           </label>
           <input
             className="block w-full text-sm text-gray-300 border border-gray-700 rounded-lg cursor-pointer bg-gray-800"
@@ -90,8 +121,8 @@ export default function ClothesForm() {
         </div>
 
         <div className="flex flex-wrap gap-4 justify-center">
-          {clothesData.images.length !== 0 &&
-            clothesData.images.map((img, idx) => (
+          {clothesData.preview.length !== 0 &&
+            clothesData.preview.map((img, idx) => (
               <img
                 key={idx}
                 src={img}
