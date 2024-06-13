@@ -6,6 +6,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import { Toaster } from "react-hot-toast";
 import { getUser } from "../../utilities/users-service";
 import LandingPage from "../LandingPage/LandingPage";
+import ClosetRoutes from "../../components/ClosetRoutes/ClosetRoutes";
 
 function App() {
   const [user, setUser] = useState(getUser());
@@ -19,6 +20,7 @@ function App() {
             <NavBar user={user} setUser={setUser} />
             <Routes>
               <Route path="/home" element={<HomePage />} />
+              <Route path="/closet/*" element={<ClosetRoutes />} />
             </Routes>
           </>
         ) : (
