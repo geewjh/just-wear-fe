@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import {
+  addClothesService,
+  uploadToS3Service,
+} from "../../utilities/closet-service";
 
 export default function ClothesForm() {
   const [clothesData, setClothesData] = useState({
@@ -8,6 +12,19 @@ export default function ClothesForm() {
     images: [],
     preview: [],
   });
+
+  const inputImage = useRef(null);
+
+  const resetClothesForm = () => {
+    setClothesData({
+      name: "",
+      type: "",
+      material: "",
+      images: [],
+      preview: [],
+    });
+    inputImage.current.value = "";
+  };
 
   const handleChange = (e) => {
     setClothesData({
@@ -34,7 +51,7 @@ export default function ClothesForm() {
     console.log("image uploaded");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (clothesData.images.length === 0) return;
 
@@ -42,8 +59,19 @@ export default function ClothesForm() {
     clothesData.images.forEach((img) => {
       imageFormData.append("images", img);
     });
-
     console.log("image appended", imageFormData);
+
+    try {
+      const imageURL = await uploadToS3Service(imageFormData);
+      const clothesItem = await addClothesService({
+        ...clothesData,
+        images: imageURL,
+      });
+      console.log(clothesItem);
+      resetClothesForm();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -81,6 +109,9 @@ export default function ClothesForm() {
             onChange={handleChange}
             className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-gray-500 focus:border-gray-500"
           >
+            <option value="" disabled>
+              Select a Type
+            </option>
             <option>Upperwear</option>
             <option>Lowerwear</option>
           </select>
@@ -100,6 +131,9 @@ export default function ClothesForm() {
             onChange={handleChange}
             className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-gray-500 focus:border-gray-500"
           >
+            <option value="" disabled>
+              Select a Material
+            </option>
             <option>Cotton</option>
             <option>Linen</option>
             <option>Corduroy</option>
