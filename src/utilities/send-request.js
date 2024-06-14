@@ -24,7 +24,7 @@ export default async function sendRequest(
     options.headers = options.headers || {};
     // Add token to an Authorization header
     // Prefacing with 'Bearer' is recommended in the HTTP specification
-    options.headers.Authorizarion = `Bearer ${token}`;
+    options.headers.Authorization = `Bearer ${token}`;
   }
 
   const res = await fetch(url, options);
