@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       <Toaster />
-      <main className="h-screen min-w-screen bg-stone-300">
+      <main className="min-h-screen min-w-screen bg-stone-300">
         {user ? (
           <>
             <NavBar user={user} setUser={setUser} />
