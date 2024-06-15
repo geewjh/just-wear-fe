@@ -7,16 +7,16 @@ import ClothesRow from "../../components/ClothesRow/ClothesRow";
 export default function ClosetPage() {
   const [clothes, setClothes] = useState([]);
 
-  useEffect(() => {
-    const fetchClothesData = async () => {
+  useEffect(function () {
+    async function fetchClothesData() {
       const allClothes = await getAllClothesService();
       console.log(allClothes);
       setClothes(allClothes);
-    };
+    }
     fetchClothesData();
   }, []);
 
-  const getTypeOfClothes = (clothes) => {
+  function getTypeOfClothes(clothes) {
     if (clothes.length === 0) {
       return [];
     }
@@ -26,7 +26,7 @@ export default function ClosetPage() {
 
     clothes.forEach((item) => {
       const type = item.type;
-      if (!seenTypes.has(type)) {
+      if (seenTypes.has(type) === false) {
         seenTypes.add(type);
         nonDuplicatedTypes.push(type);
       }
@@ -34,7 +34,7 @@ export default function ClosetPage() {
 
     console.log("non-duplicated types:", nonDuplicatedTypes);
     return nonDuplicatedTypes;
-  };
+  }
 
   const typeOfClothes = getTypeOfClothes(clothes);
 

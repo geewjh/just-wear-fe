@@ -15,7 +15,7 @@ export default function ClothesForm() {
 
   const inputImage = useRef(null);
 
-  const resetClothesForm = () => {
+  function resetClothesForm() {
     setClothesData({
       type: "",
       subType: "",
@@ -24,16 +24,16 @@ export default function ClothesForm() {
       preview: [],
     });
     inputImage.current.value = "";
-  };
+  }
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     setClothesData({
       ...clothesData,
       [e.target.name]: e.target.value,
     });
-  };
+  }
 
-  const handleImageFileInput = (e) => {
+  function handleImageFileInput(e) {
     const imageFiles = Array.from(e.target.files); //converts FileList to an arr.
     const updatedPreview = [];
 
@@ -49,9 +49,9 @@ export default function ClothesForm() {
     });
 
     console.log("image uploaded");
-  };
+  }
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (clothesData.images.length === 0) return;
 
@@ -72,7 +72,7 @@ export default function ClothesForm() {
     } catch (err) {
       console.error(err);
     }
-  };
+  }
 
   return (
     <div className="container mx-auto max-w-md p-8 bg-black shadow-lg">

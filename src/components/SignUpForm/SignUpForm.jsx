@@ -14,14 +14,14 @@ function SignUpForm({ setUser }) {
 
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     setUserData({
       ...userData,
       [e.target.name]: e.target.value,
     });
-  };
+  }
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (userData.password !== userData.confirm) {
       toast.error("passwords do not match!");
@@ -38,7 +38,7 @@ function SignUpForm({ setUser }) {
     } catch (error) {
       toast.error(`${error.message}`);
     }
-  };
+  }
 
   return (
     <div className="container mx-auto max-w-md p-8 bg-white rounded-lg shadow-lg">

@@ -12,14 +12,14 @@ export default function LoginForm({ setUser }) {
 
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     setLoginData({
       ...loginData,
       [e.target.name]: e.target.value,
     });
-  };
+  }
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     try {
       const user = await loginService(loginData);
@@ -33,7 +33,7 @@ export default function LoginForm({ setUser }) {
     } catch (error) {
       toast.error(`${error.message}`);
     }
-  };
+  }
 
   return (
     <div className="container mx-auto max-w-md p-8 bg-white rounded-lg shadow-lg">

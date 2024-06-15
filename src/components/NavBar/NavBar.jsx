@@ -7,12 +7,12 @@ import { logOutService } from "../../utilities/users-service";
 export default function NavBar({ user, setUser }) {
   const navigate = useNavigate();
 
-  const handleLogOut = (e) => {
+  function handleLogOut(e) {
     e.preventDefault();
     logOutService();
     setUser(null);
     navigate("/");
-  };
+  }
 
   return (
     <nav className=" p-4 flex justify-between items-center">
