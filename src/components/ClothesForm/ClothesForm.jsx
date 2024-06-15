@@ -1,13 +1,13 @@
 import { useState, useRef } from "react";
 import {
   addClothesService,
-  uploadToS3Service,
+  postToS3Service,
 } from "../../utilities/closet-service";
 
 export default function ClothesForm() {
   const [clothesData, setClothesData] = useState({
-    name: "",
     type: "",
+    subType: "",
     material: "",
     images: [],
     preview: [],
@@ -17,8 +17,8 @@ export default function ClothesForm() {
 
   const resetClothesForm = () => {
     setClothesData({
-      name: "",
       type: "",
+      subType: "",
       material: "",
       images: [],
       preview: [],
@@ -62,7 +62,7 @@ export default function ClothesForm() {
     console.log("image appended", imageFormData);
 
     try {
-      const imageURL = await uploadToS3Service(imageFormData);
+      const imageURL = await postToS3Service(imageFormData);
       const clothesItem = await addClothesService({
         ...clothesData,
         images: imageURL,
@@ -83,26 +83,11 @@ export default function ClothesForm() {
         onSubmit={handleSubmit}
       >
         <div className="mb-4">
-          <label htmlFor="name" className="block mb-2 text-sm font-semibold">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={clothesData.name}
-            onChange={handleChange}
-            placeholder=""
-            className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-gray-500 focus:border-gray-500"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
           <label htmlFor="type" className="block mb-2 text-sm font-semibold">
             Type
           </label>
           <select
+            required
             id="type"
             name="type"
             value={clothesData.type}
@@ -110,10 +95,35 @@ export default function ClothesForm() {
             className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-gray-500 focus:border-gray-500"
           >
             <option value="" disabled>
-              Select a Type
+              Pick a Type
             </option>
             <option>Upperwear</option>
             <option>Lowerwear</option>
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="subType" className="block mb-2 text-sm font-semibold">
+            Sub-Type
+          </label>
+          <select
+            required
+            id="subType"
+            name="subType"
+            value={clothesData.subType}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-gray-500 focus:border-gray-500"
+          >
+            <option value="" disabled>
+              Pick a Sub-Type
+            </option>
+            <option>Shirts</option>
+            <option>Pants</option>
+            <option>Shorts</option>
+            <option>Jeans</option>
+            <option>Tees</option>
+            <option>Singlets</option>
+            <option>Polos</option>
           </select>
         </div>
 
@@ -125,6 +135,7 @@ export default function ClothesForm() {
             Material
           </label>
           <select
+            required
             id="material"
             name="material"
             value={clothesData.material}
@@ -132,11 +143,12 @@ export default function ClothesForm() {
             className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:ring-gray-500 focus:border-gray-500"
           >
             <option value="" disabled>
-              Select a Material
+              Pick a Material
             </option>
             <option>Cotton</option>
             <option>Linen</option>
             <option>Corduroy</option>
+            <option>Denim</option>
           </select>
         </div>
 
@@ -145,12 +157,12 @@ export default function ClothesForm() {
             Upload Your Clothes
           </label>
           <input
+            required
             className="block w-full text-sm text-gray-300 border border-gray-700 rounded-lg cursor-pointer bg-gray-800"
             id="image"
             type="file"
             accept="image/*"
             onChange={handleImageFileInput}
-            multiple
           />
         </div>
 

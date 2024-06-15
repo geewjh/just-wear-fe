@@ -14,12 +14,12 @@ export default function ClothesRow({ type, clothes }) {
             <figure>
               <img
                 src={item.images}
-                alt={item.name}
+                alt={item.subType}
                 className="h-60 w-full object-cover"
               />
             </figure>
             <div className="card-body">
-              <h5 className="card-title">{item.name}</h5>
+              <h5 className="card-title">{item.subType}</h5>
               <p className="text-sm text-gray-600">Material: {item.material}</p>
             </div>
           </div>
