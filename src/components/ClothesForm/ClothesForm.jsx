@@ -124,6 +124,8 @@ export default function ClothesForm() {
             <option>Tees</option>
             <option>Singlets</option>
             <option>Polos</option>
+            <option>Pullovers</option>
+            <option>Jackets</option>
           </select>
         </div>
 
