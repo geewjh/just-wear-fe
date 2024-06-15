@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
   addClothesService,
   postToS3Service,
@@ -13,9 +13,9 @@ export default function ClothesForm() {
     preview: [],
   });
 
-  const inputImage = useRef(null);
+  const [fileInputKey, setFileInputKey] = useState(Date.now());
 
-  function resetClothesForm() {
+  function clearClothesForm() {
     setClothesData({
       type: "",
       subType: "",
@@ -23,7 +23,7 @@ export default function ClothesForm() {
       images: [],
       preview: [],
     });
-    inputImage.current.value = "";
+    setFileInputKey(Date.now());
   }
 
   function handleChange(e) {
@@ -68,7 +68,7 @@ export default function ClothesForm() {
         images: imageURL,
       });
       console.log(clothesItem);
-      resetClothesForm();
+      clearClothesForm();
     } catch (err) {
       console.error(err);
     }
@@ -160,6 +160,7 @@ export default function ClothesForm() {
             required
             className="block w-full text-sm text-gray-300 border border-gray-700 rounded-lg cursor-pointer bg-gray-800"
             id="image"
+            key={fileInputKey}
             type="file"
             accept="image/*"
             onChange={handleImageFileInput}

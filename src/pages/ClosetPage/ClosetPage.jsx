@@ -22,12 +22,12 @@ export default function ClosetPage() {
     }
 
     let nonDuplicatedTypes = [];
-    let seenTypes = new Set();
+    let presentTypes = new Set();
 
     clothes.forEach((item) => {
       const type = item.type;
-      if (seenTypes.has(type) === false) {
-        seenTypes.add(type);
+      if (presentTypes.has(type) === false) {
+        presentTypes.add(type);
         nonDuplicatedTypes.push(type);
       }
     });
