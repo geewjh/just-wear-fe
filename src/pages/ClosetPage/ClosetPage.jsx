@@ -10,7 +10,7 @@ export default function ClosetPage() {
   useEffect(function () {
     async function fetchClothesData() {
       const allClothes = await getAllClothesService();
-      console.log(allClothes);
+      console.log("fetched clothes:", allClothes);
       setClothes(allClothes);
     }
     fetchClothesData();

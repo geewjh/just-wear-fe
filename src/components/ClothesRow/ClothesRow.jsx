@@ -7,8 +7,7 @@ export default function ClothesRow({ type, clothes }) {
       <div className="flex flex-wrap gap-5 justify-center">
         {typeOfClothes.map((item) => (
           <div
-            className="card card-compact bg-base-100 shadow-xl transition-transform duration-500 hover:scale-105"
-            style={{ minWidth: "280px" }}
+            className="card card-compact h-fit bg-base-100 shadow-xl transition-transform duration-500 hover:scale-105"
             key={item._id}
           >
             <figure>
