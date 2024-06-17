@@ -117,15 +117,16 @@ export default function ClothesForm() {
             <option value="" disabled>
               Pick a Sub-Type
             </option>
-            <option>Shirts</option>
             <option>Pants</option>
             <option>Shorts</option>
             <option>Jeans</option>
             <option>Tees</option>
-            <option>Singlets</option>
+            <option>Wife Beater</option>
             <option>Polos</option>
             <option>Pullovers</option>
             <option>Jackets</option>
+            <option>Short Sleeve Shirts</option>
+            <option>Long Sleeve Shirts</option>
           </select>
         </div>
 
