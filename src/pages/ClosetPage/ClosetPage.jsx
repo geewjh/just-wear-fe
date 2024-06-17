@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { getAllClothesService } from "../../utilities/closet-service";
+import {
+  getAllClothesService,
+  removeClothesService,
+} from "../../utilities/closet-service";
 import { LiaPlusSquareSolid } from "react-icons/lia";
 import { Link } from "react-router-dom";
 import ClothesRow from "../../components/ClothesRow/ClothesRow";
@@ -15,6 +18,18 @@ export default function ClosetPage() {
     }
     fetchClothesData();
   }, []);
+
+  async function handleDelete(removingClothesID, objectKey) {
+    try {
+      await removeClothesService(removingClothesID, objectKey);
+      const updatedCloset = clothes.filter(
+        (item) => item._id !== removingClothesID
+      );
+      setClothes(updatedCloset);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   function getTypeOfClothes(clothes) {
     if (clothes.length === 0) {
@@ -48,7 +63,14 @@ export default function ClosetPage() {
       </header>
       <main className="flex flex-col">
         {typeOfClothes.map((type, index) => {
-          return <ClothesRow key={index} type={type} clothes={clothes} />;
+          return (
+            <ClothesRow
+              key={index}
+              handleDelete={handleDelete}
+              type={type}
+              clothes={clothes}
+            />
+          );
         })}
       </main>
     </div>

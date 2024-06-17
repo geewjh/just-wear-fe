@@ -12,10 +12,17 @@ export function postToS3API(imageFormData) {
   );
 }
 
+export function removeClothesAPI(removingClothesID, objectKey) {
+  return sendRequest(
+    `${BASE_URL}/clothes/delete/${removingClothesID}/${objectKey}`,
+    "DELETE"
+  );
+}
+
 export function addClothesAPI(clothesData) {
   return sendRequest(`${BASE_URL}/clothes/new`, "POST", clothesData);
 }
 
 export function getAllClothesAPI() {
-  return sendRequest(BASE_URL);
+  return sendRequest(`${BASE_URL}/get-all`);
 }

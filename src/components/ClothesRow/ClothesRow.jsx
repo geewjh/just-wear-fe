@@ -1,4 +1,8 @@
-export default function ClothesRow({ type, clothes }) {
+export default function ClothesRow({ type, clothes, handleDelete }) {
+  function retrieveObjectKey(imageLink) {
+    const [objectKey] = imageLink.split("/").slice(-1);
+    return objectKey;
+  }
   const typeOfClothes = clothes.filter((item) => item.type === type);
 
   return (
@@ -20,7 +24,17 @@ export default function ClothesRow({ type, clothes }) {
             <div className="card-body">
               <h5 className="card-title">{item.subType}</h5>
               <p className="text-sm text-gray-600">Material: {item.material}</p>
+              <p className="text-sm text-gray-600">Usage: {item.usage}</p>
             </div>
+            <span
+              onClick={() =>
+                handleDelete(item._id, retrieveObjectKey(item.images))
+              }
+              className="absolute bottom-0 right-0 m-2 text-lg cursor-pointer px-2 py-1 rounded"
+              style={{ userSelect: "none" }}
+            >
+              [x]
+            </span>
           </div>
         ))}
       </div>

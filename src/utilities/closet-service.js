@@ -1,9 +1,18 @@
-import { postToS3API, addClothesAPI, getAllClothesAPI } from "./closet-api";
+import {
+  postToS3API,
+  addClothesAPI,
+  removeClothesAPI,
+  getAllClothesAPI,
+} from "./closet-api";
 
 export async function postToS3Service(imageFormData) {
   const arrOfImageURL = await postToS3API(imageFormData);
   const firstImageURL = arrOfImageURL[0];
   return firstImageURL;
+}
+
+export async function removeClothesService(removingClothesID, objectKey) {
+  await removeClothesAPI(removingClothesID, objectKey);
 }
 
 export async function addClothesService(clothesData) {
