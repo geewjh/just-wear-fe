@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import {
   addClothesService,
   postToS3Service,
@@ -68,6 +69,7 @@ export default function ClothesForm() {
         images: imageURL,
       });
       console.log(clothesItem);
+      toast.success("clothes added");
       clearClothesForm();
     } catch (err) {
       console.error(err);

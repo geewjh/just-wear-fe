@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import {
   getAllClothesService,
   removeClothesService,
@@ -26,10 +27,13 @@ export default function ClosetPage() {
         (item) => item._id !== removingClothesID
       );
       setClothes(updatedCloset);
+      toast.success("clothes removed");
     } catch (err) {
       console.log(err);
     }
   }
+
+  const typeOrderToBeRendered = ["Upperwear", "Lowerwear"];
 
   function getTypeOfClothes(clothes) {
     if (clothes.length === 0) {
@@ -47,7 +51,11 @@ export default function ClosetPage() {
       }
     });
 
-    console.log("non-duplicated types:", nonDuplicatedTypes);
+    nonDuplicatedTypes.sort((a, b) => {
+      return (
+        typeOrderToBeRendered.indexOf(a) - typeOrderToBeRendered.indexOf(b)
+      );
+    });
     return nonDuplicatedTypes;
   }
 
