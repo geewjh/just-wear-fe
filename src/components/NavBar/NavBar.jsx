@@ -18,7 +18,7 @@ export default function NavBar({ user, setUser }) {
         to="/closet"
         className="text-white text-sm hover:text-zinc-400 transition duration-150 ease-in-out"
       >
-        <BiCloset className="text-2xl" />
+        <BiCloset className="text-2xl ml-3" />
       </Link>
 
       <h3 className="text-xl text-zinc-400">{user.username}&#39;s Closet</h3>
