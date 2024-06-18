@@ -73,10 +73,9 @@ export default function ClosetPage() {
 
   return (
     <div className="mx-auto max-w-screen-xl p-4">
-      <header className="flex mx-4 mb-4  justify-between">
-        <h1>This is the closet</h1>
+      <header className="flex mx-4 mb-4 justify-end">
         <Link to="/closet/clothes/new">
-          <TbCameraPlus className="text-5xl" />
+          <TbCameraPlus className="text-5xl cursor-pointer px-2 py-1 rounded  hover:text-zinc-400 transition duration-150 ease-in-out" />
         </Link>
       </header>
       <main className="flex flex-col">
