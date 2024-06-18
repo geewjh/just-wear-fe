@@ -1,5 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import {
   addClothesService,
   postToS3Service,
@@ -15,6 +16,8 @@ export default function ClothesForm() {
   });
 
   const [fileInputKey, setFileInputKey] = useState(Date.now());
+
+  const navigate = useNavigate();
 
   function clearClothesForm() {
     setClothesData({
@@ -84,7 +87,14 @@ export default function ClothesForm() {
   }
 
   return (
-    <div className="container mx-auto max-w-md p-8 bg-black shadow-lg">
+    <div className="container mx-auto max-w-md p-8 bg-black shadow-lg mt-20 relative">
+      <button
+        type="button"
+        onClick={() => navigate("/closet")}
+        className="absolute top-2 right-2 text-white font-bold hover:text-zinc-400 transition duration-150 ease-in-out"
+      >
+        [x]
+      </button>
       <form
         className="space-y-4 text-white"
         encType="multipart/form-data"
