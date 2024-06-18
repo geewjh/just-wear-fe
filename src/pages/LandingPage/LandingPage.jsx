@@ -8,8 +8,8 @@ export default function LandingPage() {
           <h2 className="text-4xl font-bold text-white ">
             Welcome to Just Wear 👕
           </h2>
-          <p className="mt-4 text-white/90 leading-relaxed">
-            Just focus on being your best.
+          <p className="mt-4 text-xs text-white/90 leading-relaxed">
+            If your clothes could speak, what would they say?
           </p>
           <Link to="/login" className="btn mr-2 mt-4">
             Login
