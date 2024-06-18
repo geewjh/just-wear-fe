@@ -27,7 +27,9 @@ export default function ClothesRow({
 
   return (
     <div>
-      <header className="text-3xl font-bold text-gray-900 mb-6">{type}</header>
+      <header className="text-2xl font-bold text-gray-900 mt-10 mb-16">
+        {type}:
+      </header>
       <div className="flex flex-wrap gap-5 justify-center">
         {typeOfClothes.map((item) => (
           <div
