@@ -26,7 +26,7 @@ export default function LoginForm({ setUser }) {
       setUser(user);
       if (user !== null && user !== undefined) {
         toast.success("successfully logged in!");
-        navigate("/home");
+        navigate("/closet");
       } else {
         navigate("/login");
       }

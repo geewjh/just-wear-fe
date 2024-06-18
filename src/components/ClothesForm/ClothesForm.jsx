@@ -27,6 +27,18 @@ export default function ClothesForm() {
     setFileInputKey(Date.now());
   }
 
+  function handleDeleteImage() {
+    setClothesData({
+      type: "",
+      subType: "",
+      material: "",
+      images: [],
+      preview: [],
+    });
+    setFileInputKey(Date.now());
+    toast.success("image removed");
+  }
+
   function handleChange(e) {
     setClothesData({
       ...clothesData,
@@ -35,21 +47,16 @@ export default function ClothesForm() {
   }
 
   function handleImageFileInput(e) {
-    const imageFiles = Array.from(e.target.files); //converts FileList to an arr.
-    const updatedPreview = [];
+    const imageFile = e.target.files[0]; // get the single selected file
+    if (!imageFile) return;
 
-    imageFiles.forEach((img) => {
-      const imageUrl = URL.createObjectURL(img); //create object URLs for preview.
-      updatedPreview.push(imageUrl);
-    });
+    const imageUrl = URL.createObjectURL(imageFile); // create object URL for preview
 
-    setClothesData({
-      ...clothesData,
-      images: [...clothesData.images, ...imageFiles],
-      preview: [...clothesData.preview, ...updatedPreview],
-    });
-
-    console.log("image uploaded");
+    setClothesData((prevData) => ({
+      ...prevData,
+      images: [imageFile], // store only the last selected file
+      preview: [imageUrl], // show only the last selected image's preview
+    }));
   }
 
   async function handleSubmit(e) {
@@ -161,15 +168,27 @@ export default function ClothesForm() {
           <label className="block mb-2 text-sm font-semibold" htmlFor="image">
             Upload Your Clothes
           </label>
-          <input
-            required
-            className="block w-full text-sm text-gray-300 border border-gray-700 rounded-lg cursor-pointer bg-gray-800"
-            id="image"
-            key={fileInputKey}
-            type="file"
-            accept="image/*"
-            onChange={handleImageFileInput}
-          />
+          {clothesData.images.length > 0 ? (
+            <span>
+              <button
+                type="button"
+                onClick={handleDeleteImage}
+                className="btn btn-remove rounded bg-gray-800 text-gray-300 border border-gray-600 px-4 py-2 mt-2 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              >
+                [x]
+              </button>
+            </span>
+          ) : (
+            <input
+              required
+              className="block w-full text-sm text-gray-300 border border-gray-700 rounded-lg cursor-pointer bg-gray-800"
+              id="image"
+              key={fileInputKey}
+              type="file"
+              accept="image/*"
+              onChange={handleImageFileInput}
+            />
+          )}
         </div>
 
         <div className="flex flex-wrap gap-4 justify-center">
