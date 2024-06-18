@@ -1,9 +1,12 @@
 import LoginForm from "../../components/LoginForm/LoginForm";
 import SignUpForm from "../../components/SignUpForm/SignUpForm";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 export default function AuthPage({ setUser }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -13,6 +16,13 @@ export default function AuthPage({ setUser }) {
         ) : location.pathname === "/login" ? (
           <LoginForm setUser={setUser} />
         ) : null}
+
+        <button
+          onClick={() => navigate("/")}
+          className="absolute top-10 left-14 text-4xl text-white font-bold hover:text-zinc-400 transition duration-150 ease-in-out flex items-center gap-2"
+        >
+          <IoIosArrowRoundBack />
+        </button>
       </main>
     </div>
   );
