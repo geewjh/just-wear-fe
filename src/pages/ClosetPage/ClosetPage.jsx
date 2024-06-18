@@ -4,7 +4,7 @@ import {
   getAllClothesService,
   removeClothesService,
 } from "../../utilities/closet-service";
-import { LiaPlusSquareSolid } from "react-icons/lia";
+import { TbCameraPlus } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import ClothesRow from "../../components/ClothesRow/ClothesRow";
 
@@ -31,6 +31,16 @@ export default function ClosetPage() {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  function handleIncrementUsage(updatedClothesItem) {
+    const newUpdatedClothes = clothes.map((item) => {
+      if (item._id === updatedClothesItem._id) {
+        return updatedClothesItem;
+      }
+      return item;
+    });
+    setClothes(newUpdatedClothes);
   }
 
   const typeOrderToBeRendered = ["Upperwear", "Lowerwear"];
@@ -66,7 +76,7 @@ export default function ClosetPage() {
       <header className="flex mx-4 mb-4  justify-between">
         <h1>This is the closet</h1>
         <Link to="/closet/clothes/new">
-          <LiaPlusSquareSolid className="text-5xl" />
+          <TbCameraPlus className="text-5xl" />
         </Link>
       </header>
       <main className="flex flex-col">
@@ -74,6 +84,7 @@ export default function ClosetPage() {
           return (
             <ClothesRow
               key={index}
+              handleIncrementUsage={handleIncrementUsage}
               handleDelete={handleDelete}
               type={type}
               clothes={clothes}

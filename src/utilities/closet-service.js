@@ -3,7 +3,13 @@ import {
   addClothesAPI,
   removeClothesAPI,
   getAllClothesAPI,
+  incrementUsageAPI,
 } from "./closet-api";
+
+export async function incrementUsageService(clothesID) {
+  const response = await incrementUsageAPI(clothesID);
+  return response;
+}
 
 export async function postToS3Service(imageFormData) {
   const arrOfImageURL = await postToS3API(imageFormData);

@@ -3,6 +3,10 @@ import sendRequest from "./send-request";
 const apiURL = import.meta.env.VITE_BASE_URL;
 const BASE_URL = `${apiURL}/api/closet`;
 
+export function incrementUsageAPI(clothesID) {
+  return sendRequest(`${BASE_URL}/increment-usage/${clothesID}`, "PATCH");
+}
+
 export function postToS3API(imageFormData) {
   return sendRequest(
     `${BASE_URL}/clothes/upload/new`,

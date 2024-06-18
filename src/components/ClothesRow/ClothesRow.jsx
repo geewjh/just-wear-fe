@@ -1,4 +1,24 @@
-export default function ClothesRow({ type, clothes, handleDelete }) {
+import { incrementUsageService } from "../../utilities/closet-service";
+import toast from "react-hot-toast";
+import { LiaPlusSquareSolid } from "react-icons/lia";
+
+export default function ClothesRow({
+  type,
+  clothes,
+  handleDelete,
+  handleIncrementUsage,
+}) {
+  async function incrementUsage(clothesID) {
+    try {
+      const updatedClothesItem = await incrementUsageService(clothesID);
+      handleIncrementUsage(updatedClothesItem);
+      toast.success("Thank you for wearing me");
+    } catch (err) {
+      console.error("Failed to increment usage:", err);
+      toast.error("Failed to increment usage");
+    }
+  }
+
   function retrieveObjectKey(imageLink) {
     const [objectKey] = imageLink.split("/").slice(-1);
     return objectKey;
@@ -26,15 +46,23 @@ export default function ClothesRow({ type, clothes, handleDelete }) {
               <p className="text-sm text-gray-600">Material: {item.material}</p>
               <p className="text-sm text-gray-600">Usage: {item.usage}</p>
             </div>
-            <span
-              onClick={() =>
-                handleDelete(item._id, retrieveObjectKey(item.images))
-              }
-              className="absolute bottom-0 right-0 m-2 text-lg cursor-pointer px-2 py-1 rounded"
-              style={{ userSelect: "none" }}
-            >
-              [x]
-            </span>
+            <div className="absolute bottom-0 right-0 m-2 flex items-center">
+              <button
+                onClick={() => incrementUsage(item._id)}
+                className="text-xl cursor-pointer px-2 py-1"
+              >
+                <LiaPlusSquareSolid />
+              </button>
+              <button
+                onClick={() =>
+                  handleDelete(item._id, retrieveObjectKey(item.images))
+                }
+                className="text-md cursor-pointer px-2 py-1 rounded"
+                style={{ userSelect: "none" }}
+              >
+                [x]
+              </button>
+            </div>
           </div>
         ))}
       </div>
