@@ -49,7 +49,7 @@ export default function ClothesRow({
             <div className="absolute bottom-0 right-0 m-2 flex items-center">
               <button
                 onClick={() => incrementUsage(item._id)}
-                className="text-xl cursor-pointer px-2 py-1"
+                className="text-xl cursor-pointer px-2 py-1  hover:text-zinc-400 transition duration-150 ease-in-out"
               >
                 <LiaPlusSquareSolid />
               </button>
@@ -57,7 +57,7 @@ export default function ClothesRow({
                 onClick={() =>
                   handleDelete(item._id, retrieveObjectKey(item.images))
                 }
-                className="text-md cursor-pointer px-2 py-1 rounded"
+                className="text-md cursor-pointer px-2 py-1 rounded  hover:text-zinc-400 transition duration-150 ease-in-out"
                 style={{ userSelect: "none" }}
               >
                 [x]
