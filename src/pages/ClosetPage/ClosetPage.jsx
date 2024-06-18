@@ -27,7 +27,7 @@ export default function ClosetPage() {
         (item) => item._id !== removingClothesID
       );
       setClothes(updatedCloset);
-      toast.success("clothes removed");
+      toast.success("Awesome, you just Marie Kondo-ed your closet");
     } catch (err) {
       console.log(err);
     }
