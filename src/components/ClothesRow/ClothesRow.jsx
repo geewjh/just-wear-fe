@@ -2,6 +2,7 @@ import { incrementUsageService } from "../../utilities/closet-service";
 import toast from "react-hot-toast";
 import { LiaPlusSquareSolid } from "react-icons/lia";
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 
 export default function ClothesRow({
   type,
@@ -117,6 +118,12 @@ export default function ClothesRow({
               >
                 <LiaPlusSquareSolid />
               </button>
+              <Link
+                to={`/closet/edit/clothes/${item._id}`}
+                className="text-sm cursor-pointer px-2 py-1 rounded hover:text-zinc-400 transition duration-150 ease-in-out"
+              >
+                Edit
+              </Link>
             </div>
             <div className="absolute top-2 right-2 flex items-center">
               <button

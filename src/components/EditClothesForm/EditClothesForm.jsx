@@ -1,88 +1,98 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
-  addClothesService,
+  updateClothesService,
   postToS3Service,
+  getClothesByIdService,
 } from "../../utilities/closet-service";
 
-export default function ClothesForm() {
+export default function EditClothesForm() {
+  const { clothesID } = useParams();
+  const navigate = useNavigate();
+
   const [clothesData, setClothesData] = useState({
     type: "",
     subType: "",
     material: "",
+    usage: 0,
     images: [],
     preview: [],
   });
 
-  const [fileInputKey, setFileInputKey] = useState(Date.now());
+  const [isNewImageUploaded, setIsNewImageUploaded] = useState(false);
 
-  const navigate = useNavigate();
-
-  function clearClothesForm() {
-    setClothesData({
-      type: "",
-      subType: "",
-      material: "",
-      images: [],
-      preview: [],
-    });
-    setFileInputKey(Date.now());
-  }
+  useEffect(
+    function () {
+      async function fetchSpecificClothesData() {
+        const specificClothes = await getClothesByIdService(clothesID);
+        setClothesData({
+          type: specificClothes.type,
+          subType: specificClothes.subType,
+          material: specificClothes.material,
+          usage: specificClothes.usage,
+          images: specificClothes.images,
+          preview: [specificClothes.images],
+        });
+      }
+      fetchSpecificClothesData();
+    },
+    [clothesID]
+  );
 
   function handleDeleteImage() {
-    setClothesData({
-      type: "",
-      subType: "",
-      material: "",
-      images: [],
+    setClothesData((prevClothesData) => ({
+      ...prevClothesData,
+      images: "",
       preview: [],
-    });
-    setFileInputKey(Date.now());
-    toast.success("image removed");
+    }));
+    setIsNewImageUploaded(false);
+    toast.success("Image removed");
   }
 
   function handleChange(e) {
-    setClothesData({
-      ...clothesData,
+    setClothesData((prevClothesData) => ({
+      ...prevClothesData,
       [e.target.name]: e.target.value,
-    });
+    }));
   }
 
   function handleImageFileInput(e) {
-    const imageFile = e.target.files[0]; // get the single selected file
+    const imageFile = e.target.files[0];
+
     if (!imageFile) return;
 
-    const imageUrl = URL.createObjectURL(imageFile); // create object URL for preview
-
-    setClothesData((prevData) => ({
-      ...prevData,
-      images: [imageFile], // store only the last selected file
-      preview: [imageUrl], // show only the last selected image's preview
+    const imageUrl = URL.createObjectURL(imageFile);
+    setClothesData((prevClothesData) => ({
+      ...prevClothesData,
+      images: imageFile,
+      preview: [imageUrl],
     }));
+
+    setIsNewImageUploaded(true);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (clothesData.images.length === 0) return;
+    let imageURL = clothesData.images;
+    if (isNewImageUploaded) {
+      const formData = new FormData();
+      formData.append("images", clothesData.images);
+      imageURL = await postToS3Service(formData);
+    }
 
-    const imageFormData = new FormData();
-    clothesData.images.forEach((img) => {
-      imageFormData.append("images", img);
-    });
-    console.log("image appended", imageFormData);
+    const updatedClothesData = {
+      ...clothesData,
+      images: imageURL,
+    };
 
     try {
-      const imageURL = await postToS3Service(imageFormData);
-      const clothesItem = await addClothesService({
-        ...clothesData,
-        images: imageURL,
-      });
-      console.log(clothesItem);
-      toast.success("Clothes added");
-      clearClothesForm();
+      await updateClothesService(clothesID, updatedClothesData);
+      toast.success("Clothes updated successfully");
+      navigate("/closet");
     } catch (err) {
-      console.error(err);
+      console.error("Failed to update clothes:", err);
+      toast.error("Failed to update clothes");
     }
   }
 
@@ -175,49 +185,54 @@ export default function ClothesForm() {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-2 text-sm font-semibold" htmlFor="image">
-            Upload Your Clothes
+          <label htmlFor="usage" className="block mb-2 text-sm font-semibold">
+            Usage
           </label>
-          {clothesData.images.length > 0 ? (
-            <span>
+          <input
+            required
+            type="number"
+            id="usage"
+            name="usage"
+            value={clothesData.usage}
+            onChange={handleChange}
+            className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-2 text-sm font-semibold" htmlFor="image">
+            Edit Your Clothes
+          </label>
+          <input
+            // required
+            className="block w-full text-sm text-gray-300 border border-gray-700 rounded-lg cursor-pointer bg-gray-800"
+            id="image"
+            type="file"
+            accept="image/*"
+            onChange={handleImageFileInput}
+          />
+          {clothesData.preview.map((img, idx) => (
+            <div key={idx} className="mt-2 flex flex-col items-center">
+              <img
+                src={img}
+                alt="Preview"
+                className="w-24 h-24 rounded-lg mb-2"
+              />
               <button
                 type="button"
                 onClick={handleDeleteImage}
-                className="btn btn-remove rounded bg-gray-800 text-gray-300 border border-gray-600 px-4 py-2 mt-2 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
               >
-                [x]
+                Remove Image
               </button>
-            </span>
-          ) : (
-            <input
-              required
-              className="block w-full text-sm text-gray-300 border border-gray-700 rounded-lg cursor-pointer bg-gray-800"
-              id="image"
-              key={fileInputKey}
-              type="file"
-              accept="image/*"
-              onChange={handleImageFileInput}
-            />
-          )}
+            </div>
+          ))}
         </div>
-
-        <div className="flex flex-wrap gap-4 justify-center">
-          {clothesData.preview.length !== 0 &&
-            clothesData.preview.map((img, idx) => (
-              <img
-                key={idx}
-                src={img}
-                alt={`Clothes ${idx + 1}`}
-                className="w-24 h-24 rounded-lg"
-              />
-            ))}
-        </div>
-
         <button
           type="submit"
           className="w-full text-sm font-medium text-center px-6 py-2 rounded-lg bg-gray-700 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
         >
-          Upload
+          Edit
         </button>
       </form>
     </div>

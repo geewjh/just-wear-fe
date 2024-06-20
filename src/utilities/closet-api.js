@@ -3,6 +3,18 @@ import sendRequest from "./send-request";
 const apiURL = import.meta.env.VITE_BASE_URL;
 const BASE_URL = `${apiURL}/api/closet`;
 
+export function getClothesByIdAPI(clothesID) {
+  return sendRequest(`${BASE_URL}/get/clothes/${clothesID}`);
+}
+
+export function updateClothesAPI(clothesID, updatedClothesData) {
+  return sendRequest(
+    `${BASE_URL}/update-clothes/${clothesID}`,
+    "PATCH",
+    updatedClothesData
+  );
+}
+
 export function incrementUsageAPI(clothesID) {
   return sendRequest(`${BASE_URL}/increment-usage/${clothesID}`, "PATCH");
 }

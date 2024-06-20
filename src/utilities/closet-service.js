@@ -1,14 +1,29 @@
 import {
   postToS3API,
   addClothesAPI,
+  updateClothesAPI,
   removeClothesAPI,
   getAllClothesAPI,
   incrementUsageAPI,
+  getClothesByIdAPI,
 } from "./closet-api";
 
+export async function getClothesByIdService(clothesID) {
+  const specificClothesItem = await getClothesByIdAPI(clothesID);
+  return specificClothesItem;
+}
+
+export async function updateClothesService(clothesID, updatedClothesData) {
+  const updatedClothesItem = await updateClothesAPI(
+    clothesID,
+    updatedClothesData
+  );
+  return updatedClothesItem;
+}
+
 export async function incrementUsageService(clothesID) {
-  const response = await incrementUsageAPI(clothesID);
-  return response;
+  const incrementedClothesItem = await incrementUsageAPI(clothesID);
+  return incrementedClothesItem;
 }
 
 export async function postToS3Service(imageFormData) {
