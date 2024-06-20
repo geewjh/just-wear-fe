@@ -20,25 +20,24 @@ export default function EditClothesForm() {
     preview: [],
   });
 
-  const [originalImages, setOriginalImages] = useState([]);
+  const [originalData, setOriginalData] = useState({});
   const [isNewImageUploaded, setIsNewImageUploaded] = useState(false);
-  const [isFormChanged, setIsFormChanged] = useState(false);
   const [fileInputKey, setFileInputKey] = useState(Date.now());
 
   useEffect(
     function () {
       async function fetchSpecificClothesData() {
         const specificClothes = await getClothesByIdService(clothesID);
-        setClothesData({
+        const initialData = {
           type: specificClothes.type,
           subType: specificClothes.subType,
           material: specificClothes.material,
           usage: specificClothes.usage,
           images: specificClothes.images,
           preview: [specificClothes.images],
-        });
-        setOriginalImages(specificClothes.images);
-        setIsFormChanged(false);
+        };
+        setClothesData(initialData);
+        setOriginalData(JSON.parse(JSON.stringify(initialData)));
         setFileInputKey(Date.now());
       }
       fetchSpecificClothesData();
@@ -46,16 +45,27 @@ export default function EditClothesForm() {
     [clothesID]
   );
 
+  function checkFormChanged() {
+    const { type, subType, material, usage, images } = clothesData;
+    const imagesChanged = isNewImageUploaded && images !== originalData.images;
+    const dataChanged =
+      type !== originalData.type ||
+      subType !== originalData.subType ||
+      material !== originalData.material ||
+      Number(usage) !== Number(originalData.usage);
+
+    return dataChanged || imagesChanged;
+  }
+
   function handleDeleteImage() {
     setClothesData((prevClothesData) => ({
       ...prevClothesData,
-      images: originalImages,
-      preview: [originalImages],
+      images: originalData.images,
+      preview: [originalData.images],
     }));
 
     setIsNewImageUploaded(false);
     setFileInputKey(Date.now());
-    setIsFormChanged(false);
   }
 
   function handleChange(e) {
@@ -63,7 +73,6 @@ export default function EditClothesForm() {
       ...prevClothesData,
       [e.target.name]: e.target.value,
     }));
-    setIsFormChanged(true);
   }
 
   function handleImageFileInput(e) {
@@ -79,11 +88,16 @@ export default function EditClothesForm() {
     }));
 
     setIsNewImageUploaded(true);
-    setIsFormChanged(true);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (!checkFormChanged()) {
+      toast.error("Can't submit without any changes");
+      return;
+    }
+
     let imageURL = clothesData.images;
     if (isNewImageUploaded) {
       const formData = new FormData();
@@ -100,8 +114,6 @@ export default function EditClothesForm() {
       await updateClothesService(clothesID, updatedClothesData);
       toast.success("Clothes updated successfully");
       navigate("/closet");
-      setIsFormChanged(false);
-      setFileInputKey(Date.now());
     } catch (err) {
       console.error("Failed to update clothes:", err);
       toast.error("Failed to update clothes");
@@ -244,7 +256,6 @@ export default function EditClothesForm() {
           ))}
         </div>
         <button
-          disabled={!isFormChanged}
           type="submit"
           className="w-full text-sm font-medium text-center px-6 py-2 rounded-lg bg-gray-700 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
         >
