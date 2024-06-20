@@ -20,7 +20,10 @@ export default function EditClothesForm() {
     preview: [],
   });
 
+  const [originalImages, setOriginalImages] = useState([]);
   const [isNewImageUploaded, setIsNewImageUploaded] = useState(false);
+  const [isFormChanged, setIsFormChanged] = useState(false);
+  const [fileInputKey, setFileInputKey] = useState(Date.now());
 
   useEffect(
     function () {
@@ -34,6 +37,9 @@ export default function EditClothesForm() {
           images: specificClothes.images,
           preview: [specificClothes.images],
         });
+        setOriginalImages(specificClothes.images);
+        setIsFormChanged(false);
+        setFileInputKey(Date.now());
       }
       fetchSpecificClothesData();
     },
@@ -43,11 +49,13 @@ export default function EditClothesForm() {
   function handleDeleteImage() {
     setClothesData((prevClothesData) => ({
       ...prevClothesData,
-      images: "",
-      preview: [],
+      images: originalImages,
+      preview: [originalImages],
     }));
+
     setIsNewImageUploaded(false);
-    toast.success("Image removed");
+    setFileInputKey(Date.now());
+    setIsFormChanged(false);
   }
 
   function handleChange(e) {
@@ -55,6 +63,7 @@ export default function EditClothesForm() {
       ...prevClothesData,
       [e.target.name]: e.target.value,
     }));
+    setIsFormChanged(true);
   }
 
   function handleImageFileInput(e) {
@@ -70,6 +79,7 @@ export default function EditClothesForm() {
     }));
 
     setIsNewImageUploaded(true);
+    setIsFormChanged(true);
   }
 
   async function handleSubmit(e) {
@@ -90,6 +100,8 @@ export default function EditClothesForm() {
       await updateClothesService(clothesID, updatedClothesData);
       toast.success("Clothes updated successfully");
       navigate("/closet");
+      setIsFormChanged(false);
+      setFileInputKey(Date.now());
     } catch (err) {
       console.error("Failed to update clothes:", err);
       toast.error("Failed to update clothes");
@@ -193,6 +205,7 @@ export default function EditClothesForm() {
             type="number"
             id="usage"
             name="usage"
+            min="0"
             value={clothesData.usage}
             onChange={handleChange}
             className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-white"
@@ -204,7 +217,7 @@ export default function EditClothesForm() {
             Edit Your Clothes
           </label>
           <input
-            // required
+            key={fileInputKey}
             className="block w-full text-sm text-gray-300 border border-gray-700 rounded-lg cursor-pointer bg-gray-800"
             id="image"
             type="file"
@@ -218,17 +231,20 @@ export default function EditClothesForm() {
                 alt="Preview"
                 className="w-24 h-24 rounded-lg mb-2"
               />
-              <button
-                type="button"
-                onClick={handleDeleteImage}
-                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
-              >
-                Remove Image
-              </button>
+              {isNewImageUploaded && (
+                <button
+                  type="button"
+                  onClick={handleDeleteImage}
+                  className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
+                >
+                  Remove Image
+                </button>
+              )}
             </div>
           ))}
         </div>
         <button
+          disabled={!isFormChanged}
           type="submit"
           className="w-full text-sm font-medium text-center px-6 py-2 rounded-lg bg-gray-700 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
         >
