@@ -116,15 +116,15 @@ export default function ClothesRow({
                 <span className="mr-2">Usage:</span>
                 {item.usage === 0 ? (
                   <span className="flex items-center text-red-500">
-                    Not worn <ImCrying className="ml-2" />
+                    Not even once <ImCrying className="ml-2" />
                   </span>
                 ) : item.usage === 1 ? (
                   <span className="flex items-center text-blue-500">
-                    Worn once <BsEmojiSmile className="ml-2" />
+                    Once <BsEmojiSmile className="ml-2" />
                   </span>
                 ) : (
                   <span className="flex items-center text-green-500">
-                    Worn {item.usage} times <GoThumbsup className="ml-2" />
+                    {item.usage} times <GoThumbsup className="ml-2" />
                   </span>
                 )}
               </div>
