@@ -72,7 +72,7 @@ export default function LoginForm({ setUser }) {
             onClick={togglePasswordVisibility}
             className="absolute inset-y-0 right-3 flex items-center text-lg cursor-pointer mt-6"
           >
-            {showPassword ? <LiaEye /> : <LiaEyeSlash />}
+            {showPassword ? <LiaEyeSlash /> : <LiaEye />}
           </span>
         </div>
         <div className="flex items-center justify-between">
