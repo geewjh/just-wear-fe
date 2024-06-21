@@ -130,7 +130,7 @@ export default function EditClothesForm() {
         [x]
       </button>
       <form
-        className="space-y-4 text-white "
+        className="space-y-4 text-white"
         encType="multipart/form-data"
         autoComplete="off"
         onSubmit={handleSubmit}
