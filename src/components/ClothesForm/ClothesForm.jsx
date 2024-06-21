@@ -87,7 +87,7 @@ export default function ClothesForm() {
   }
 
   return (
-    <div className="container mx-auto max-w-md p-8 bg-black shadow-lg mt-20 relative">
+    <div className="container mx-auto max-w-md p-8 bg-black shadow-lg mt-18 relative">
       <button
         type="button"
         onClick={() => navigate("/closet")}
