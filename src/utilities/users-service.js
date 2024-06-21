@@ -1,4 +1,4 @@
-import { signUpAPI, loginAPI, checkTokenAPI } from "./users-api";
+import { signUpAPI, loginAPI, checkTokenAPI, deleteUserAPI } from "./users-api";
 
 export async function signUpService(userData) {
   const token = await signUpAPI(userData);
@@ -52,4 +52,9 @@ export function getUser() {
 
   // If there's a token, return the user in the payload, otherwise return null
   return token ? JSON.parse(atob(token.split(".")[1])).user : null;
+}
+
+export async function deleteUserService() {
+  await deleteUserAPI();
+  localStorage.removeItem("token");
 }

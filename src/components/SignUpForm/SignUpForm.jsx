@@ -31,7 +31,7 @@ function SignUpForm({ setUser }) {
       setUser(user);
       if (user !== null && user !== undefined) {
         toast.success("successfully signed up!");
-        navigate("/home");
+        navigate("/closet");
       } else {
         navigate("/register");
       }

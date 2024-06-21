@@ -14,3 +14,7 @@ export function loginAPI(loginData) {
 export function checkTokenAPI() {
   return sendRequest(`${BASE_URL}/check-token`);
 }
+
+export async function deleteUserAPI() {
+  return sendRequest(`${BASE_URL}/delete`, "DELETE");
+}
