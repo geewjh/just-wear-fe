@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { signUpService } from "../../utilities/users-service";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { LiaEyeSlash, LiaEye } from "react-icons/lia";
 
 function SignUpForm({ setUser }) {
   const [userData, setUserData] = useState({
@@ -11,6 +12,8 @@ function SignUpForm({ setUser }) {
     password: "",
     confirm: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,16 +24,21 @@ function SignUpForm({ setUser }) {
     });
   }
 
+  function togglePasswordVisibility() {
+    setShowPassword(!showPassword);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (userData.password !== userData.confirm) {
       toast.error("passwords do not match!");
+      return;
     }
     try {
       const user = await signUpService(userData);
       setUser(user);
       if (user !== null && user !== undefined) {
-        toast.success("successfully signed up!");
+        toast.success("Welcome to Just Wear!");
         navigate("/closet");
       } else {
         navigate("/register");
@@ -77,7 +85,7 @@ function SignUpForm({ setUser }) {
             required
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <label
             htmlFor="password"
             className="block mb-2 text-sm font-semibold text-gray-700 dark:text-white"
@@ -85,7 +93,7 @@ function SignUpForm({ setUser }) {
             Password
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             name="password"
             value={userData.password}
@@ -93,8 +101,14 @@ function SignUpForm({ setUser }) {
             className="w-full p-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required
           />
+          <span
+            onClick={togglePasswordVisibility}
+            className="absolute inset-y-0 right-3 flex items-center text-lg cursor-pointer mt-6"
+          >
+            {showPassword ? <LiaEye /> : <LiaEyeSlash />}
+          </span>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <label
             htmlFor="confirm-password"
             className="block mb-2 text-sm font-semibold text-gray-700 dark:text-white"
@@ -102,7 +116,7 @@ function SignUpForm({ setUser }) {
             Confirm password
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="confirm-password"
             name="confirm"
             value={userData.confirm}
@@ -110,6 +124,12 @@ function SignUpForm({ setUser }) {
             className="w-full p-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 text-gray-900 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required
           />
+          <span
+            onClick={togglePasswordVisibility}
+            className="absolute inset-y-0 right-3 flex items-center text-lg cursor-pointer mt-6"
+          >
+            {showPassword ? <LiaEye /> : <LiaEyeSlash />}
+          </span>
         </div>
         <div className="flex items-center justify-between">
           <button
