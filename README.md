@@ -34,7 +34,7 @@ You can access the back-end repo [here](https://github.com/geewjh/just-wear-be).
   - `GET /api/users/check-token`
   - `POST /api/users`
   - `POST /api/users/login`
-  - `POST /api/users/delete`
+  - `DELETE /api/users/delete`
 
 ## Technologies Used
 
