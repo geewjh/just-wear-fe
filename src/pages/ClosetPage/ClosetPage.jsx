@@ -10,6 +10,7 @@ import ClothesRow from "../../components/ClothesRow/ClothesRow";
 
 export default function ClosetPage() {
   const [clothes, setClothes] = useState([]);
+  const [searchType, setSearchType] = useState("");
 
   useEffect(function () {
     async function fetchClothesData() {
@@ -20,6 +21,29 @@ export default function ClosetPage() {
     fetchClothesData();
   }, []);
 
+  const filteredClothes = clothes.filter((clothe) => {
+    return clothe.type.toLowerCase().includes(searchType.toLowerCase());
+  });
+
+  const typeOrderToBeRendered = ["Upperwear", "Lowerwear"];
+
+  function getTypeOfClothes(clothes) {
+    return clothes
+      .reduce((acc, item) => {
+        if (!acc.includes(item.type)) {
+          acc.push(item.type);
+        }
+        return acc;
+      }, [])
+      .sort((a, b) => {
+        return (
+          typeOrderToBeRendered.indexOf(a) - typeOrderToBeRendered.indexOf(b)
+        );
+      });
+  }
+
+  const typeOfClothes = getTypeOfClothes(filteredClothes);
+
   async function handleDelete(removingClothesID, objectKey) {
     try {
       await removeClothesService(removingClothesID, objectKey);
@@ -27,7 +51,7 @@ export default function ClosetPage() {
         (item) => item._id !== removingClothesID
       );
       setClothes(updatedCloset);
-      toast.success("Awesome, you just Marie Kondo-ed your closet");
+      toast.success("Awesome, you just decluttered your closet!");
     } catch (err) {
       console.log(err);
     }
@@ -43,37 +67,16 @@ export default function ClosetPage() {
     setClothes(newUpdatedClothes);
   }
 
-  const typeOrderToBeRendered = ["Upperwear", "Lowerwear"];
-
-  function getTypeOfClothes(clothes) {
-    if (clothes.length === 0) {
-      return [];
-    }
-
-    let nonDuplicatedTypes = [];
-    let presentTypes = new Set();
-
-    clothes.forEach((item) => {
-      const type = item.type;
-      if (presentTypes.has(type) === false) {
-        presentTypes.add(type);
-        nonDuplicatedTypes.push(type);
-      }
-    });
-
-    nonDuplicatedTypes.sort((a, b) => {
-      return (
-        typeOrderToBeRendered.indexOf(a) - typeOrderToBeRendered.indexOf(b)
-      );
-    });
-    return nonDuplicatedTypes;
-  }
-
-  const typeOfClothes = getTypeOfClothes(clothes);
-
   return (
     <div className="mx-auto max-w-screen-xl p-4">
       <header className="flex mx-4 mb-4 justify-end">
+        <input
+          type="text"
+          placeholder="Search upper or lower..."
+          value={searchType}
+          onChange={(e) => setSearchType(e.target.value)}
+          className="input input-bordered input-sm w-full max-w-xs mt-2 mr-4"
+        />
         <Link to="/closet/clothes/new">
           <TbCameraPlus className="text-5xl cursor-pointer px-2 py-1 rounded  hover:text-zinc-400 transition duration-150 ease-in-out" />
         </Link>
@@ -86,7 +89,7 @@ export default function ClosetPage() {
               handleIncrementUsage={handleIncrementUsage}
               handleDelete={handleDelete}
               type={type}
-              clothes={clothes}
+              clothes={filteredClothes.filter((item) => item.type === type)}
             />
           );
         })}

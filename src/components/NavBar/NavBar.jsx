@@ -45,12 +45,9 @@ export default function NavBar({ user, setUser }) {
 
   return (
     <nav className="p-4 flex justify-between items-center">
-      <Link
-        to="/closet"
-        className="text-white text-sm hover:text-zinc-400 transition duration-150 ease-in-out"
-      >
+      <span className="text-white text-sm">
         <GiHanger className="text-5xl ml-6" />
-      </Link>
+      </span>
 
       <h3 className="text-xl text-zinc-400 mr-5">
         {user?.username}&#39;s Closet
